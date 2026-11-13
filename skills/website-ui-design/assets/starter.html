@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>站点标题</title>
+<!--
+  website-ui-design starter
+  1. Replace :root with the chosen block in references/style-library.md.
+     Chinese Classical also uses references/chinese-colors.md, including --on-primary.
+  2. Button labels use --on-primary. Do not point them at --bg.
+  3. Write real copy, then delete this comment and every placeholder string.
+  4. Keep the pair-card section and the 配色 nav link only for 中国古典.
+     Delete both otherwise. The five sampled hexes are frozen.
+     Label colors below are the AA pairs.
+  5. Run references/anti-slop.md and: python3 scripts/contrast.py HEX HEX
+-->
+<style>
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --text-muted: #6B6B6B;
+    --primary: #1A1A1A;
+    --on-primary: #FAFAFA;
+    --accent: #E5E5E5;
+    --border: #E5E5E5;
+    --radius: 4px;
+    --radius-pair: 24px;
+    --space: 8px;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --font-display: "Inter", "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+    --font-body: "Inter", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+    --motion: 200ms ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+  .skip {
+    position: absolute;
+    left: var(--space);
+    top: var(--space);
+    transform: translateY(-150%);
+    background: var(--primary);
+    color: var(--on-primary);
+    padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+    border-radius: var(--radius);
+  }
+  .skip:focus { transform: none; }
+  .wrap { width: min(1120px, calc(100% - var(--space) * 4)); margin-inline: auto; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: calc(var(--space) * 8);
+    align-items: end;
+    padding: calc(var(--space) * 12) 0 calc(var(--space) * 10);
+  }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 4.75rem); margin-bottom: calc(var(--space) * 3); }
+  .hero p { color: var(--text-muted); font-size: 1.125rem; max-width: 38ch; margin-bottom: calc(var(--space) * 4); }
+  .hero .visual, .feature .art {
+    background:
+      linear-gradient(135deg, var(--accent), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .hero .visual { aspect-ratio: 4 / 5; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    background: var(--primary);
+    color: var(--on-primary);
+    padding: calc(var(--space) * 1.5) calc(var(--space) * 3);
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: transform var(--motion);
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .features { padding: calc(var(--space) * 10) 0; display: grid; gap: calc(var(--space) * 8); }
+  .feature { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: calc(var(--space) * 6); align-items: center; }
+  .feature:nth-child(even) { grid-template-columns: 1.1fr 0.9fr; }
+  .feature:nth-child(even) .feature-text { order: 2; }
+  .feature h3 { font-size: 1.75rem; margin-bottom: calc(var(--space) * 2); }
+  .feature p { color: var(--text-muted); }
+  .feature .art { aspect-ratio: 16 / 10; }
+
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: calc(var(--space) * 4); padding: calc(var(--space) * 8) 0; }
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: calc(var(--space) * 4);
+  }
+  .card h3 { font-size: 1.3rem; margin-bottom: var(--space); }
+  .card p { color: var(--text-muted); flex: 1; margin-bottom: calc(var(--space) * 3); }
+  .card .btn { align-self: flex-start; margin-top: auto; }
+
+  .palette { padding: calc(var(--space) * 8) 0 calc(var(--space) * 4); }
+  .palette h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: calc(var(--space) * 4); }
+  .pairings { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: calc(var(--space) * 3); }
+  .pair {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-pair);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    box-shadow: var(--shadow);
+  }
+  .pair .top, .pair .bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+  }
+  .pair .swatch {
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    font-family: var(--font-body);
+  }
+  .pair-douhuang .top { background: #FFDF70; color: #153472; }
+  .pair-douhuang .bottom { background: #153472; color: #FFFFFF; }
+  .pair-fuguang .top { background: #EFC2A3; color: #161823; }
+  .pair-fuguang .bottom { background: #DA0011; color: #FFFFFF; }
+  .pair-danhong .top { background: #FE5C1B; color: #161823; }
+  .pair-danhong .bottom { background: #1A3B32; color: #FFFFFF; }
+  .pair-shuilan .top { background: #9ED4F0; color: #144975; }
+  .pair-shuilan .bottom { background: #144975; color: #FFFFFF; }
+  .pair-danfen .top { background: #EBD2D6; color: #4A1E10; }
+  .pair-danfen .bottom { background: #E45600; color: #161823; }
+
+  .cta { padding: calc(var(--space) * 12) 0; }
+  .cta h2 { font-size: clamp(2rem, 4vw, 3.1rem); margin-bottom: calc(var(--space) * 3); }
+  footer { padding: calc(var(--space) * 6) 0; color: var(--text-muted); font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    .hero, .feature, .feature:nth-child(even) { grid-template-columns: 1fr; }
+    .feature:nth-child(even) .feature-text { order: 0; }
+    .cards { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到内容</a>
+  <header class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:calc(var(--space)*3);flex-wrap:wrap;padding:calc(var(--space)*3) 0;">
+    <strong style="font-family:var(--font-display);font-size:1.25rem;">品牌名</strong>
+    <nav style="display:flex;gap:calc(var(--space)*3);color:var(--text-muted);">
+      <a href="#features">能力</a>
+      <a href="#palette">配色</a>
+      <a href="#cta">联系</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap">
+      <div>
+        <h1>换成这件产品真正的标题</h1>
+        <p>一句具体的话：为谁解决什么问题，不用形容词堆叠。</p>
+        <a class="btn" href="#cta">开始使用</a>
+      </div>
+      <div class="visual" role="img" aria-label="替换为真实图片"></div>
+    </section>
+
+    <section id="features" class="features wrap">
+      <article class="feature">
+        <div class="feature-text">
+          <h3>能力一</h3>
+          <p>写出这项能力带来的具体结果。</p>
+        </div>
+        <div class="art" role="img" aria-label="替换为真实图片"></div>
+      </article>
+      <article class="feature">
+        <div class="feature-text">
+          <h3>能力二</h3>
+          <p>写出这项能力带来的具体结果。</p>
+        </div>
+        <div class="art" role="img" aria-label="替换为真实图片"></div>
+      </article>
+    </section>
+
+    <section class="cards wrap">
+      <article class="card">
+        <h3>方案 A</h3>
+        <p>真实权益说明。</p>
+        <a class="btn" href="#cta">选择</a>
+      </article>
+      <article class="card">
+        <h3>方案 B</h3>
+        <p>真实权益说明，写长一点也能和左边的按钮底对齐。</p>
+        <a class="btn" href="#cta">选择</a>
+      </article>
+    </section>
+
+    <section id="palette" class="palette wrap" aria-labelledby="pair-title">
+      <h2 id="pair-title">五种双色</h2>
+      <div class="pairings">
+        <article class="pair pair-douhuang" aria-label="豆黄 × 群青">
+          <div class="top"><span>豆黄</span><span class="swatch">#FFDF70</span></div>
+          <div class="bottom"><span>群青</span><span class="swatch">#153472</span></div>
+        </article>
+        <article class="pair pair-fuguang" aria-label="扶光 × 中国红">
+          <div class="top"><span>扶光</span><span class="swatch">#EFC2A3</span></div>
+          <div class="bottom"><span>中国红</span><span class="swatch">#DA0011</span></div>
+        </article>
+        <article class="pair pair-danhong" aria-label="丹红 × 深海绿">
+          <div class="top"><span>丹红</span><span class="swatch">#FE5C1B</span></div>
+          <div class="bottom"><span>深海绿</span><span class="swatch">#1A3B32</span></div>
+        </article>
+        <article class="pair pair-shuilan" aria-label="水蓝 × 鹤蓝">
+          <div class="top"><span>水蓝</span><span class="swatch">#9ED4F0</span></div>
+          <div class="bottom"><span>鹤蓝</span><span class="swatch">#144975</span></div>
+        </article>
+        <article class="pair pair-danfen" aria-label="淡粉 × 金红">
+          <div class="top"><span>淡粉</span><span class="swatch">#EBD2D6</span></div>
+          <div class="bottom"><span>金红</span><span class="swatch">#E45600</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="cta" class="cta wrap">
+      <h2>一句有力的行动号召</h2>
+      <a class="btn" href="#">立即体验</a>
+    </section>
+  </main>
+
+  <footer class="wrap">© 2026 品牌名 · 真实联系方式</footer>
+</body>
+</html>
